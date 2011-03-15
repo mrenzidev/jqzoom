@@ -53,7 +53,8 @@
         el.mousepos = {};
         el.mouseDown = false;
         $(el).css({
-            'outline-style': 'none'
+            'outline-style': 'none',
+            'text-decoration': 'none'
         });
 
         //BASE IMAGE
@@ -388,7 +389,8 @@
             var $obj = this
 
             this.append = function () {
-                this.node = $('<div/>').addClass('zoomPreload').css('visibility', 'hidden').html(settings.preloadText).appendTo('.zoomPad', el);
+                this.node = $('<div/>').addClass('zoomPreload').css('visibility', 'hidden').html(settings.preloadText);
+                $('.zoomPad', el).append(this.node);
             };
             this.show = function () {
                 this.node.top = (smallimage.oh - this.node.height()) / 2;
@@ -422,7 +424,7 @@
             var $obj = this;
             this.node = $('<div/>').addClass('zoomPup');
             this.append = function () {
-                this.node.appendTo('.zoomPad', el).hide();
+                $('.zoomPad', el).append($(this.node).hide());
                 if (settings.zoomType == 'reverse') {
                     this.image = new Image();
                     this.image.src = smallimage.node.src; // fires off async
@@ -646,12 +648,12 @@
             };
             this.append = function () {
 
-                this.node.appendTo('.zoomPad', el);
+                $('.zoomPad', el).append(this.node);
 
                 this.node.css({
                     position: 'absolute',
                     display: 'none',
-                    zIndex: 1001
+                    zIndex: 5001
                 });
 
 
@@ -688,9 +690,10 @@
 
 
 
-                    this.node.bind('mouseover mousemove', function (event) {
+                    this.node.bind('mouseover mousemove mouseenter', function (event) {
+                       obj.deactivate();
                         if (settings.zoomType != 'innerzoom' && !settings.alwaysOn) {
-                            obj.deactivate();
+                            //obj.deactivate();
                         }
                     });
 
@@ -752,7 +755,9 @@
                         zIndex: 99,
                         width: this.ieframe.width + 'px',
                         height: this.ieframe.height + 'px'
-                    }).appendTo('.zoomPad', el).show();
+                    });
+                    $('.zoomPad', el).append(this.ieframe);
+                    this.ieframe.show();
                 };
 
 
