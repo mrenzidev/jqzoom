@@ -111,7 +111,7 @@
     z-index:101;
 }
 
-.zoomIframe2{
+.zoomIframe{
     z-index: -1;
     filter:alpha(opacity=0);
     -moz-opacity: 0.80;

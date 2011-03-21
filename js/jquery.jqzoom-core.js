@@ -1,5 +1,5 @@
 /*!
- * jQzoom Evolution Library v2.0.1  - Javascript Image magnifier
+ * jQzoom Evolution Library v2.0.3  - Javascript Image magnifier
  * http://www.mind-projects.it
  *
  * Copyright 2011, Engineer Marco Renzi
@@ -16,7 +16,7 @@
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission. 
  *
- * Date: 04 March 2011 22:19:00
+ * Date: 21 March 2011 09:26:00
  */
 
 
@@ -40,6 +40,8 @@
         var api = null;
         api = $(el).data("jqzoom");
         if (api) return api;
+        
+      
         var obj = this;
         var settings = $.extend({}, $.jqzoom.defaults, options || {});
         obj.el = el;
@@ -859,7 +861,7 @@
             return this;
         }
 
-
+        $(el).data("jqzoom",obj);
     }
 
 
