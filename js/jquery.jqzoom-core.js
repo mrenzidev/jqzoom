@@ -1,5 +1,5 @@
 /*!
- * jQzoom Evolution Library v2.0.3  - Javascript Image magnifier
+ * jQzoom Evolution Library v2.1  - Javascript Image magnifier
  * http://www.mind-projects.it
  *
  * Copyright 2011, Engineer Marco Renzi
