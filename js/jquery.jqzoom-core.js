@@ -169,9 +169,11 @@
                     thumblist.push(first);
                 }
                 thumblist.each(function () {
+                    //get thumbnail options specified by the user
+                    var thumb_options = $.extend({}, eval("(" + $.trim($(this).attr('rel')) + ")"));
+                    
                     //preloading thumbs
                     if (settings.preloadImages) {
-                        var thumb_options = $.extend({}, eval("(" + $.trim($(this).attr('rel')) + ")"));
                         thumb_preload[i] = new Image();
                         thumb_preload[i].src = thumb_options.largeimage;
                         i++;
@@ -182,6 +184,14 @@
                         });
                         e.preventDefault();
                         obj.swapimage(this);
+                        
+                        //set and show the zoom wrapper title, if specified
+                        zoomtitle = thumb_options.zoomWrapperTitle;
+                        $('.zoomWrapperTitle', this.node).hide();
+                        if (settings.title && zoomtitle.length > 0) {
+                            $('.zoomWrapperTitle', this.node).html(zoomtitle).show();
+                        }
+                        
                         return false;
                     });
                 });
