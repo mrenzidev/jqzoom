@@ -16,7 +16,7 @@
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * Date: 03 May 2011 22:16:00
+ * Date: 16 Mar 2012 11:14:00
  */
 (function ($) {
     //GLOBAL VARIABLES
@@ -49,6 +49,8 @@
         el.timer = null;
         el.mousepos = {};
         el.mouseDown = false;
+        // jquery object to position the zoom window around
+        el.positionAround = settings.positionAround.length ? [ settings.positionAround.offset().left, settings.positionAround.offset().top ] : [0,0];
         $(el).css({
             'outline-style': 'none',
             'text-decoration': 'none'
@@ -89,7 +91,7 @@
                     lens.append();
                 }
                 //creating zoomWindow
-                if ($(".zoomWindow", el).length == 0) {
+                if (el.zoomWindow !== true) {
                     stage.append();
                 }
                 //creating Preload
@@ -149,7 +151,7 @@
                         return false;
                     }
                     el.zoom_active = true;
-                    if (el.largeimageloaded && !$('.zoomWindow', el).is(':visible')) {
+                    if (el.largeimageloaded && !$('.zoomWindow', el.outerZoomPad).is(':visible')) {
                         obj.activate(e);
                     }
                     if (el.largeimageloaded && (settings.zoomType != 'drag' || (settings.zoomType == 'drag' && el.mouseDown))) {
@@ -296,13 +298,13 @@
                 $obj.h = image.height();
                 $obj.ow = image.outerWidth();
                 $obj.oh = image.outerHeight();
-                $obj.pos = image.offset();
-                $obj.pos.l = image.offset().left + $obj.bleft;
-                $obj.pos.t = image.offset().top + $obj.btop;
+                $obj.pos = (settings.positionAround.length) ? settings.positionAround.offset() : image.offset();
+                $obj.pos.l = $obj.pos.left + $obj.bleft;
+                $obj.pos.t = $obj.pos.top + $obj.btop;
                 $obj.pos.r = $obj.w + $obj.pos.l;
                 $obj.pos.b = $obj.h + $obj.pos.t;
-                $obj.rightlimit = image.offset().left + $obj.ow;
-                $obj.bottomlimit = image.offset().top + $obj.oh;
+                $obj.rightlimit = $obj.pos.left + $obj.ow;
+                $obj.bottomlimit = $obj.pos.top + $obj.oh;
                 
             };
             this.node.onerror = function () {
@@ -533,13 +535,15 @@
                     }
                 }
                 this.node.css({
-                    'left': this.node.leftpos + 'px',
-                    'top': this.node.toppos + 'px'
+                    'left': (el.positionAround[0] + this.node.leftpos) + 'px',
+                    'top' : (el.positionAround[1] + this.node.toppos) + 'px'
                 });
                 return this;
             };
             this.append = function () {
-                $('.zoomPad', el).append(this.node);
+                el.zoomWindow = true;
+                el.outerZoomPad = (settings.appendZoomTo && settings.appendZoomTo.length) ? $('<div class="outerZoomPad"/>').appendTo(settings.appendZoomTo) : $('.zoomPad', el);
+                el.outerZoomPad.append(this.node);
                 this.node.css({
                     position: 'absolute',
                     display: 'none',
@@ -610,7 +614,7 @@
                         width: this.ieframe.width + 'px',
                         height: this.ieframe.height + 'px'
                     });
-                    $('.zoomPad', el).append(this.ieframe);
+                    el.outerZoomPad.append(this.ieframe);
                     this.ieframe.show();
                 };
             };
@@ -643,15 +647,15 @@
                 $obj.w = image.width();
                 $obj.h = image.height();
                 $obj.pos = image.offset();
-                $obj.pos.l = image.offset().left;
-                $obj.pos.t = image.offset().top;
+                $obj.pos.l = $obj.pos.left;
+                $obj.pos.t = $obj.pos.top;
                 $obj.pos.r = $obj.w + $obj.pos.l;
                 $obj.pos.b = $obj.h + $obj.pos.t;
                 scale.x = ($obj.w / smallimage.w);
                 scale.y = ($obj.h / smallimage.h);
                 el.scale = scale;
                 document.body.removeChild(this.node);
-                $('.zoomWrapperImage', el).empty().append(this.node);
+                $('.zoomWrapperImage', el.outerZoomPad).empty().append(this.node);
                 //setting lens dimensions;
                 lens.setdimensions();
             };
@@ -696,6 +700,10 @@
             //zoomWindow x offset, can be negative(more on the left) or positive(more on the right)
             yOffset: 0,
             //zoomWindow y offset, can be negative(more on the left) or positive(more on the right)
+            appendZoomTo: null,
+            // jquery seleced object to append an external zoomPad to; i.e. appendZoomTo: $('body'),
+            positionAround: null,
+            // jquery selected object to positiin the zoomPad around, in case it isn't the image itself; i.e. positionAround: $('#sidebar'),
             position: "right",
             //zoomWindow default position
             preloadImages: true,
