@@ -35,7 +35,6 @@
     jqzoom = function (el, options) {
         var api = null;
         api = $(el).data("jqzoom");
-        if (api) return api;
         var obj = this;
         var settings = $.extend({}, $.jqzoom.defaults, options || {});
         obj.el = el;
