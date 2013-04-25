@@ -643,7 +643,6 @@
                 lens.setdimensions();
             };
             this.node.onerror = function () {
-                alert('Problems while loading the big image.');
                 throw 'Problems while loading the big image.';
             };
             this.node.onload = function () {
