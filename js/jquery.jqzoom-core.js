@@ -233,10 +233,7 @@
                     stage.hide();
                     obj.load();
                 }
-                else {
-                    alert('ERROR :: Missing parameter for largeimage or smallimage.');
-                    throw 'ERROR :: Missing parameter for largeimage or smallimage.';
-                }
+
                 return false;
             }
         });
@@ -300,10 +297,6 @@
                 $obj.pos.b = $obj.h + $obj.pos.t;
                 $obj.rightlimit = image.offset().left + $obj.ow;
                 $obj.bottomlimit = image.offset().top + $obj.oh;
-            };
-            this.node.onerror = function () {
-                alert('Problems while loading image.');
-                throw 'Problems while loading image.';
             };
             this.node.onload = function () {
                 $obj.fetchdata();
@@ -641,9 +634,6 @@
                 $('.zoomWrapperImage', el).empty().append(this.node);
                 //setting lens dimensions;
                 lens.setdimensions();
-            };
-            this.node.onerror = function () {
-                throw 'Problems while loading the big image.';
             };
             this.node.onload = function () {
                 //fetching data
