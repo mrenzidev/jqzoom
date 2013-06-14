@@ -122,7 +122,7 @@
                         cursor: 'crosshair'
                     });
                 }
-                $(".zoomPad", el).bind('mouseenter mouseover', function (event) {
+                $(".zoomPad", el).bind('mouseenter', function (event) {
                     img.attr('title', '');
                     $(el).attr('title', '');
                     el.zoom_active = true;
@@ -141,7 +141,8 @@
                 $(".zoomPad", el).bind('mousemove', function (e) {
                     //prevent fast mouse mevements not to fire the mouseout event
                     if (e.pageX > smallimage.pos.r || e.pageX < smallimage.pos.l || e.pageY < smallimage.pos.t || e.pageY > smallimage.pos.b) {
-                        lens.setcenter();
+                        //lens.setcenter();
+			obj.deactivate();
                         return false;
                     }
                     el.zoom_active = true;
@@ -565,7 +566,7 @@
             this.hide = function () {
                 switch (settings.hideEffect) {
                 case 'fadeout':
-                    this.node.fadeOut(settings.fadeoutSpeed, function () {});
+                    this.node.stop().css({opacity:1}).fadeOut(settings.fadeoutSpeed, function () { });
                     break;
                 default:
                     this.node.hide();
@@ -576,8 +577,7 @@
             this.show = function () {
                 switch (settings.showEffect) {
                 case 'fadein':
-                    this.node.fadeIn();
-                    this.node.fadeIn(settings.fadeinSpeed, function () {});
+                    this.node.stop().css({opacity:1}).fadeIn(settings.fadeinSpeed, function () { });
                     break;
                 default:
                     this.node.show();
