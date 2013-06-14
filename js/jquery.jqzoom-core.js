@@ -565,7 +565,7 @@
             this.hide = function () {
                 switch (settings.hideEffect) {
                 case 'fadeout':
-                    this.node.fadeOut(settings.fadeoutSpeed, function () {});
+                    this.node.stop().css({opacity:1}).fadeOut(settings.fadeoutSpeed, function () { });
                     break;
                 default:
                     this.node.hide();
@@ -576,8 +576,7 @@
             this.show = function () {
                 switch (settings.showEffect) {
                 case 'fadein':
-                    this.node.fadeIn();
-                    this.node.fadeIn(settings.fadeinSpeed, function () {});
+                    this.node.stop().css({opacity:1}).fadeIn(settings.fadeinSpeed, function () { });
                     break;
                 default:
                     this.node.show();
