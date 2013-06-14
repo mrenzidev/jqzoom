@@ -122,7 +122,7 @@
                         cursor: 'crosshair'
                     });
                 }
-                $(".zoomPad", el).bind('mouseenter mouseover', function (event) {
+                $(".zoomPad", el).bind('mouseenter', function (event) {
                     img.attr('title', '');
                     $(el).attr('title', '');
                     el.zoom_active = true;
